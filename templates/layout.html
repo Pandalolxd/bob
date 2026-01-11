@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Place Identifier{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern_theme.css') }}">
 </head>
 <body>
     <div class="container">
@@ -19,5 +19,9 @@
         {% endwith %}
         {% block content %}{% endblock %}
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace({ 'stroke-width': 2, 'width': '1em', 'height': '1em' });
+    </script>
 </body>
 </html>

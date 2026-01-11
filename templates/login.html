@@ -3,16 +3,28 @@
 {% block title %}Admin Login{% endblock %}
 
 {% block content %}
-<div class="login-form">
-    <h2>Admin Login</h2>
-    <form method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Login</button>
-    </form>
-</div>
+<main class="main-container">
+    <div class="login-card card">
+        <div class="card-header">
+            <h2>Admin Login</h2>
+            <p>Enter your credentials to access the admin panel.</p>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="e.g., danice">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="e.g., danice">
+                </div>
+                <button type="submit" class="button button-primary button-full-width">Login</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            <a href="{{ url_for('index') }}">Back to Main Site</a>
+        </div>
+    </div>
+</main>
 {% endblock %}
