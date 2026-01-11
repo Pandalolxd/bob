@@ -3,32 +3,59 @@
 {% block title %}Identify a Place{% endblock %}
 
 {% block content %}
-<div class="user-interface">
-    <header class="main-header">
-        <h1>Place Recognition AI</h1>
-        <p>Upload a photo of a landmark, and our AI will tell you what it is.</p>
-    </header>
+<nav class="top-nav">
+    <a href="{{ url_for('login') }}" class="button-nav">Admin Panel</a>
+</nav>
 
-    <div class="upload-section">
-        <form id="upload-form" enctype="multipart/form-data">
-            <label for="image-upload" class="custom-file-upload">
-                Choose Image
-            </label>
-            <input id="image-upload" name="image" type="file" accept="image/*" required>
-            <button type="submit">Identify</button>
-        </form>
-        <p id="file-name" class="file-name-display"></p>
+<main class="main-container">
+    <div class="hero-section">
+        <h1 class="fade-in">AI Place Recognition</h1>
+        <p class="fade-in-delay">Discover landmarks with a single photo. Upload an image or use your camera.</p>
     </div>
 
-    <div id="result-section" class="result-section" style="display:none;">
-        <h2>Result</h2>
-        <div id="result-content">
-            <!-- Results will be injected here by JavaScript -->
+    <div class="card interactive-card">
+        <div class="card-header">
+            <h3>Start Identification</h3>
+        </div>
+        <div class="card-body">
+            <form id="upload-form" enctype="multipart/form-data">
+                <div class="form-actions">
+                    <label for="image-upload" class="button button-primary">
+                        <i data-feather="upload"></i> Choose Image
+                    </label>
+                    <input id="image-upload" name="image" type="file" accept="image/*" hidden>
+                    <button type="button" id="start-camera" class="button button-secondary">
+                        <i data-feather="camera"></i> Use Camera
+                    </button>
+                    <button type="submit" class="button button-cta">
+                        <i data-feather="search"></i> Identify
+                    </button>
+                </div>
+                <p id="file-name" class="file-name-display"></p>
+            </form>
         </div>
     </div>
 
-    <div id="loading-spinner" class="loading-spinner" style="display:none;"></div>
-</div>
+    <div id="camera-section" class="camera-section card" style="display:none;">
+        <video id="camera-feed" class="camera-view" autoplay playsinline></video>
+        <button id="capture-btn" class="button button-capture"><i data-feather="circle"></i> Capture</button>
+        <canvas id="image-canvas" style="display:none;"></canvas>
+    </div>
+
+    <div id="loading-spinner" class="spinner-container" style="display:none;">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="result-section" class="result-card card" style="display:none;">
+        <div class="card-header">
+            <h2>Recognition Result</h2>
+        </div>
+        <div id="result-content" class="card-body">
+            <!-- Results will be injected here -->
+        </div>
+    </div>
+</main>
 
 <script src="{{ url_for('static', filename='main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
 {% endblock %}
