@@ -18,11 +18,16 @@
 
     <div class="upload-form-container">
         <h4>Upload New Training Images</h4>
-        <form method="post" enctype="multipart/form-data">
+        <form id="upload-form" method="post" enctype="multipart/form-data">
             <label for="images">Select images to upload:</label>
             <input type="file" id="images" name="images" multiple required>
             <input type="submit" value="Upload Images" class="button">
         </form>
+        <div id="upload-progress" class="upload-progress" style="display: none;">
+            <p>Uploading...</p>
+            <progress id="progress-bar" max="100" value="0"></progress>
+            <span id="progress-text">0/0</span>
+        </div>
     </div>
 
     <hr>
@@ -45,4 +50,8 @@
         {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin_upload.js') }}"></script>
 {% endblock %}
