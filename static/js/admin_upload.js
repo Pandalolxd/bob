@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const submitButton = uploadForm.querySelector('input[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.value = 'Uploading...';
+
         uploadProgress.style.display = 'block';
         const totalFiles = files.length;
         progressBar.max = totalFiles;
@@ -27,9 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('images', file, file.name);
 
             try {
-                const response = await fetch(uploadForm.action, {
+                const response = await fetch(uploadForm.action || window.location.href, {
                     method: 'POST',
                     body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
                 });
 
                 if (!response.ok) {

@@ -142,6 +142,10 @@ def manage_place(place_id):
                 new_image = Image(filename=filename, features=pickled_features, place_id=place.id)
                 db.session.add(new_image)
         db.session.commit()
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'success': True, 'message': 'Images uploaded successfully.'})
+
         flash(f"Images uploaded for '{place.name}'.", "success")
         return redirect(url_for('manage_place', place_id=place.id))
     return render_template('manage_place.html', place=place)
