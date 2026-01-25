@@ -15,6 +15,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    const resultOverlay = document.getElementById('full-screen-result');
+    const closeOverlayBtn = document.getElementById('close-overlay');
+    const slideshow = document.getElementById('slideshow');
+    const overlayPlaceName = document.getElementById('overlay-place-name');
+    const overlaySimilarity = document.getElementById('overlay-similarity');
+    const overlayDescription = document.getElementById('overlay-description');
+    const prevSlideBtn = document.getElementById('prev-slide');
+    const nextSlideBtn = document.getElementById('next-slide');
+
+    let currentSlide = 0;
+    let totalSlides = 0;
+
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length === 0) return;
+
+        slides.forEach(slide => slide.classList.remove('active'));
+
+        if (index >= slides.length) currentSlide = 0;
+        else if (index < 0) currentSlide = slides.length - 1;
+        else currentSlide = index;
+
+        slides[currentSlide].classList.add('active');
+    }
+
+    prevSlideBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+    nextSlideBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+
+    closeOverlayBtn.addEventListener('click', function() {
+        resultOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scroll
+    });
+
     uploadForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -37,15 +70,35 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             loadingSpinner.style.display = 'none';
-            resultSection.style.display = 'block';
 
             if (data.success) {
-                resultContent.innerHTML = `
-                    <h3>${data.place_name}</h3>
-                    <p>${data.description}</p>
-                    <small>Similarity Score: ${data.similarity}</small>
-                `;
+                // Populate Overlay
+                overlayPlaceName.textContent = data.place_name;
+                overlaySimilarity.textContent = data.similarity;
+                overlayDescription.textContent = data.description;
+
+                slideshow.innerHTML = '';
+                if (data.old_images && data.old_images.length > 0) {
+                    data.old_images.forEach((imgUrl, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'slide' + (index === 0 ? ' active' : '');
+                        slide.innerHTML = `<img src="${imgUrl}" alt="Old photo of ${data.place_name}">`;
+                        slideshow.appendChild(slide);
+                    });
+                    totalSlides = data.old_images.length;
+                    currentSlide = 0;
+                    document.querySelector('.slideshow-controls').style.display = totalSlides > 1 ? 'flex' : 'none';
+                } else {
+                    slideshow.innerHTML = '<div class="slide active"><p style="color:white;">No old photos available for this place.</p></div>';
+                    document.querySelector('.slideshow-controls').style.display = 'none';
+                }
+
+                // Show Overlay
+                resultOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
+                feather.replace(); // Refresh icons
             } else {
+                resultSection.style.display = 'block';
                 resultContent.innerHTML = `<p class="error">${data.message || data.error}</p>`;
             }
         })

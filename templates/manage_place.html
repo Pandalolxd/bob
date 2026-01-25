@@ -9,45 +9,117 @@
         <a href="{{ url_for('admin_dashboard') }}" class="button-secondary">Back to Dashboard</a>
     </div>
 
-    <div class="place-details">
-        <h4>Description</h4>
-        <p>{{ place.description }}</p>
-    </div>
-
-    <hr>
-
-    <div class="upload-form-container">
-        <h4>Upload New Training Images</h4>
-        <form id="upload-form" method="post" enctype="multipart/form-data">
-            <label for="images">Select images to upload:</label>
-            <input type="file" id="images" name="images" multiple required>
-            <input type="submit" value="Upload Images" class="button">
-        </form>
-        <div id="upload-progress" class="upload-progress" style="display: none;">
-            <p>Uploading...</p>
-            <progress id="progress-bar" max="100" value="0"></progress>
-            <span id="progress-text">0/0</span>
+    <div class="edit-place-section card">
+        <div class="card-header">
+            <h3>Edit Place Details</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('update_place', place_id=place.id) }}" method="post">
+                <div class="form-group">
+                    <label for="name">Place Name:</label>
+                    <input type="text" id="name" name="name" value="{{ place.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="5" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--border-radius); box-sizing: border-box; font-family: inherit;">{{ place.description }}</textarea>
+                </div>
+                <button type="submit" class="button button-primary">Update Details</button>
+            </form>
         </div>
     </div>
 
     <hr>
 
-    <div class="image-gallery">
-        <h4>Existing Training Images ({{ place.images|length }})</h4>
-        {% if place.images %}
-            <div class="gallery">
-                {% for image in place.images %}
-                    <div class="gallery-item">
-                        <img src="{{ url_for('uploaded_file', filename=image.filename) }}" alt="Training image for {{ place.name }}">
-                        <form action="{{ url_for('delete_image', image_id=image.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this image?');">
-                           <button type="submit" class="delete-link">Delete</button>
-                        </form>
-                    </div>
-                {% endfor %}
+    <div class="upload-sections" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="upload-form-container card">
+            <div class="card-header">
+                <h3>Training Images (AI)</h3>
             </div>
-        {% else %}
-            <p>No training images have been uploaded for this place yet.</p>
-        {% endif %}
+            <div class="card-body">
+                <p><small>Used by the AI to recognize this place.</small></p>
+                <form id="upload-form" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="images">Select images:</label>
+                        <input type="file" id="images" name="images" multiple required>
+                    </div>
+                    <input type="submit" value="Upload Training Images" class="button button-cta">
+                </form>
+                <div id="upload-progress" class="upload-progress" style="display: none;">
+                    <p>Uploading...</p>
+                    <progress id="progress-bar" max="100" value="0"></progress>
+                    <span id="progress-text">0/0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-form-container card">
+            <div class="card-header">
+                <h3>Old Photos (Result UI)</h3>
+            </div>
+            <div class="card-body">
+                <p><small>Displayed in the result slideshow.</small></p>
+                <form id="old-upload-form" action="{{ url_for('upload_old_images', place_id=place.id) }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="old_images">Select old photos:</label>
+                        <input type="file" id="old_images" name="old_images" multiple required>
+                    </div>
+                    <input type="submit" value="Upload Old Photos" class="button button-cta">
+                </form>
+                <div id="old-upload-progress" class="upload-progress" style="display: none;">
+                    <p>Uploading...</p>
+                    <progress id="old-progress-bar" max="100" value="0"></progress>
+                    <span id="old-progress-text">0/0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="galleries">
+        <div class="image-gallery card">
+            <div class="card-header">
+                <h4>Training Images ({{ place.images|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if place.images %}
+                    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">
+                        {% for image in place.images %}
+                            <div class="gallery-item" style="position: relative;">
+                                <img src="{{ url_for('uploaded_file', filename=image.filename) }}" alt="Training image" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px;">
+                                <form action="{{ url_for('delete_image', image_id=image.id) }}" method="post" onsubmit="return confirm('Are you sure?');">
+                                   <button type="submit" class="delete-link" style="position: absolute; top: 5px; right: 5px; background: rgba(231, 76, 60, 0.8); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">&times;</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No training images.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="image-gallery card">
+            <div class="card-header">
+                <h4>Old Photos ({{ place.old_images|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if place.old_images %}
+                    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">
+                        {% for image in place.old_images %}
+                            <div class="gallery-item" style="position: relative;">
+                                <img src="{{ url_for('uploaded_file', filename=image.filename) }}" alt="Old photo" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px;">
+                                <form action="{{ url_for('delete_old_image', image_id=image.id) }}" method="post" onsubmit="return confirm('Are you sure?');">
+                                   <button type="submit" class="delete-link" style="position: absolute; top: 5px; right: 5px; background: rgba(231, 76, 60, 0.8); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer;">&times;</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No old photos.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
