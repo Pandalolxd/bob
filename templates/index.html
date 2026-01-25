@@ -59,6 +59,37 @@
     </div>
 </main>
 
+<div id="full-screen-result" class="result-overlay">
+    <div class="overlay-inner">
+        <button id="close-overlay" class="button button-secondary close-overlay-btn">
+            <i data-feather="arrow-left"></i> Back
+        </button>
+
+        <div class="overlay-content-grid">
+            <div class="slideshow-wrapper">
+                <div id="slideshow" class="slideshow">
+                    <!-- Slides will be injected here -->
+                </div>
+                <div class="slideshow-controls">
+                    <button id="prev-slide" class="slide-btn"><i data-feather="chevron-left"></i></button>
+                    <button id="next-slide" class="slide-btn"><i data-feather="chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="place-details-view">
+                <h1 id="overlay-place-name"></h1>
+                <div class="similarity-badge">
+                    <i data-feather="check-circle"></i> Match Found (<span id="overlay-similarity"></span>)
+                </div>
+                <div class="description-container">
+                    <h3>About this place</h3>
+                    <p id="overlay-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{{ url_for('static', filename='main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
 {% endblock %}

@@ -28,11 +28,17 @@ class Place(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.Text, nullable=False)
     images = db.relationship('Image', backref='place', lazy=True, cascade="all, delete-orphan")
+    old_images = db.relationship('OldImage', backref='place', lazy=True, cascade="all, delete-orphan")
 
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(100), nullable=False)
     features = db.Column(db.PickleType, nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('place.id'), nullable=False)
+
+class OldImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(100), nullable=False)
     place_id = db.Column(db.Integer, db.ForeignKey('place.id'), nullable=False)
 
 # --- Helper Functions ---
@@ -69,11 +75,13 @@ def predict():
 
         if score > 0.6: # Similarity threshold
             result_place = Place.query.get(best_match.place_id)
+            old_images_urls = [url_for('uploaded_file', filename=img.filename) for img in result_place.old_images]
             return jsonify({
                 'success': True,
                 'place_name': result_place.name,
                 'description': result_place.description,
-                'similarity': f"{score:.2f}" # Include the score
+                'similarity': f"{score:.2f}", # Include the score
+                'old_images': old_images_urls
             })
         else:
             return jsonify({'success': False, 'message': 'Could not identify the place.'})
@@ -150,6 +158,39 @@ def manage_place(place_id):
         return redirect(url_for('manage_place', place_id=place.id))
     return render_template('manage_place.html', place=place)
 
+@app.route('/admin/places/update/<int:place_id>', methods=['POST'])
+@admin_required
+def update_place(place_id):
+    place = Place.query.get_or_404(place_id)
+    place.name = request.form['name']
+    place.description = request.form['description']
+    db.session.commit()
+    flash(f"Place '{place.name}' updated.", "success")
+    return redirect(url_for('manage_place', place_id=place.id))
+
+@app.route('/admin/places/upload_old/<int:place_id>', methods=['POST'])
+@admin_required
+def upload_old_images(place_id):
+    place = Place.query.get_or_404(place_id)
+    files = request.files.getlist('old_images')
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            # Add prefix to distinguish old images
+            filename = "old_" + filename
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(path)
+
+            new_old_image = OldImage(filename=filename, place_id=place.id)
+            db.session.add(new_old_image)
+    db.session.commit()
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'success': True, 'message': 'Old images uploaded successfully.'})
+
+    flash(f"Old images uploaded for '{place.name}'.", "success")
+    return redirect(url_for('manage_place', place_id=place.id))
+
 @app.route('/admin/places/delete/<int:place_id>', methods=['POST'])
 @admin_required
 def delete_place(place_id):
@@ -159,10 +200,28 @@ def delete_place(place_id):
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
         if os.path.exists(image_path):
             os.remove(image_path)
+    # Also delete old images
+    for image in place.old_images:
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+        if os.path.exists(image_path):
+            os.remove(image_path)
     db.session.delete(place)
     db.session.commit()
     flash(f"Place '{place.name}' and all its images have been deleted.", "success")
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/old_images/delete/<int:image_id>', methods=['POST'])
+@admin_required
+def delete_old_image(image_id):
+    image = OldImage.query.get_or_404(image_id)
+    place_id_ref = image.place_id
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+    if os.path.exists(image_path):
+        os.remove(image_path)
+    db.session.delete(image)
+    db.session.commit()
+    flash(f"Old image '{image.filename}' has been deleted.", "success")
+    return redirect(url_for('manage_place', place_id=place_id_ref))
 
 @app.route('/admin/images/delete/<int:image_id>', methods=['POST'])
 @admin_required
