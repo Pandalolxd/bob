@@ -45,6 +45,19 @@ class OldImage(db.Model):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path, endpoint, filename)
+            if os.path.exists(file_path):
+                values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
+
 # --- User Routes ---
 @app.route('/')
 def index():
