@@ -441,3 +441,84 @@ progress::-webkit-progress-value {
     line-height: 1.8;
     white-space: pre-wrap;
 }
+
+/* --- Mobile Optimizations --- */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .main-container {
+        padding: 0;
+    }
+
+    .hero-section {
+        margin-bottom: 25px;
+        padding: 0 10px;
+    }
+
+    .hero-section h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .top-nav {
+        position: static;
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        margin-bottom: 15px;
+        border-radius: 0;
+    }
+
+    @media (min-width: 480px) {
+        .card {
+            border-radius: var(--border-radius);
+        }
+    }
+
+    .card-header {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-actions .button,
+    .form-actions label.button {
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .camera-section.card {
+        padding: 10px;
+    }
+
+    .slideshow {
+        height: 300px;
+    }
+
+    .overlay-inner {
+        padding: 20px 15px;
+    }
+
+    .place-details-view h1 {
+        font-size: 1.8rem;
+    }
+
+    .overlay-content-grid {
+        gap: 20px;
+    }
+}
