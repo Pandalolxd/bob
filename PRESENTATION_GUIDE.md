@@ -1,97 +1,97 @@
-# AI Place Recognition - Presentation Guide
+# Panduan Presentasi AI Place Recognition
 
-This guide is designed to help you explain your project to your teacher and classmates in a clear, professional, and confident way.
-
----
-
-## 1. Project Overview
-**What is it?**
-A web application that identifies landmarks or buildings from a photo. It uses Artificial Intelligence (specifically "Computer Vision") to "look" at an image and compare it to a database of known locations.
+Panduan ini dirancang untuk membantumu menjelaskan proyek ini kepada guru dan teman-teman sekelas dengan cara yang jelas, profesional, dan percaya diri.
 
 ---
 
-## 2. The "Brain" - How the Machine Learning Works
-This is the most important part to explain to your teacher. We use a technique called **Feature Extraction**.
-
-### A. The Model: MobileNetV2
-*   **What it is:** We use a pre-trained AI model called **MobileNetV2**.
-*   **The Analogy:** Think of MobileNetV2 as a "Professional Art Critic" that has seen millions of different images (cars, dogs, trees, buildings).
-*   **What it does:** Instead of looking at pixels, it looks for *patterns*—shapes, textures, and edges.
-
-### B. Feature Extraction (The Digital Fingerprint)
-*   When you upload a photo, the AI doesn't see "The Eiffel Tower." It sees a long list of numbers (a "vector").
-*   This list of numbers is like a **Digital Fingerprint**. Every unique place has a slightly different fingerprint.
-*   **In the code:** This happens in `ml_core.py` in the `extract_features` function.
-
-### C. Cosine Similarity (The Matching Process)
-*   **How it decides:** Once we have the "fingerprint" of your uploaded photo, we compare it to all the "fingerprints" we already have in our database.
-*   We use a math formula called **Cosine Similarity**.
-*   **Simple explanation:** It measures how "close" two fingerprints are. If the fingerprints are 90% similar, we say "That's a match!"
-*   **In the code:** This happens in `ml_core.py` in the `find_most_similar` function.
+## 1. Ringkasan Proyek
+**Apa ini?**
+Sebuah aplikasi web yang dapat mengenali landmark atau bangunan dari sebuah foto. Aplikasi ini menggunakan Kecerdasan Buatan (khususnya "Computer Vision") untuk "melihat" gambar dan membandingkannya dengan database lokasi yang sudah diketahui.
 
 ---
 
-## 3. The Tech Stack (What you built it with)
-*   **Frontend (The Face):** HTML5, CSS3 (Modern UI), and JavaScript. We used "Feather Icons" for the design.
-*   **Backend (The Engine):** **Flask** (a Python web framework). It handles the requests and communicates with the AI logic.
-*   **Database:** **SQLite** with **SQLAlchemy**. It stores the names of the places, their descriptions, and their "Digital Fingerprints."
-*   **AI Libraries:** **TensorFlow/Keras** (to run the MobileNetV2 model) and **NumPy** (for the math).
+## 2. "Otak" di Baliknya - Cara Kerja Machine Learning
+Ini adalah bagian terpenting untuk dijelaskan kepada gurumu. Kami menggunakan teknik yang disebut **Feature Extraction** (Ekstraksi Fitur).
+
+### A. Model: MobileNetV2
+*   **Apa itu:** Kami menggunakan model AI yang sudah dilatih sebelumnya bernama **MobileNetV2**.
+*   **Analoginya:** Bayangkan MobileNetV2 sebagai seorang "Kritikus Seni Profesional" yang telah melihat jutaan gambar berbeda (mobil, anjing, pohon, bangunan).
+*   **Apa fungsinya:** Alih-alih melihat pixel demi pixel, AI ini melihat *pola*—seperti bentuk, tekstur, dan garis-garis bangunan.
+
+### B. Feature Extraction (Sidik Jari Digital)
+*   Saat kamu mengunggah foto, AI tidak langsung melihat "Monas" atau "Candi Borobudur". AI melihat daftar angka yang sangat panjang (disebut "vektor").
+*   Daftar angka ini seperti **Sidik Jari Digital**. Setiap tempat unik memiliki sidik jari yang sedikit berbeda.
+*   **Dalam kode:** Ini terjadi di file `ml_core.py` pada fungsi `extract_features`.
+
+### C. Cosine Similarity (Proses Pencocokan)
+*   **Cara AI memutuskan:** Setelah kita punya "sidik jari" dari foto yang diunggah, kita membandingkannya dengan semua "sidik jari" yang sudah ada di database kita.
+*   Kami menggunakan rumus matematika bernama **Cosine Similarity**.
+*   **Penjelasan sederhana:** Rumus ini mengukur seberapa "dekat" atau mirip dua buah sidik jari. Jika kemiripannya di atas 90%, kita bisa bilang "Ini cocok!"
+*   **Dalam kode:** Ini terjadi di file `ml_core.py` pada fungsi `find_most_similar`.
 
 ---
 
-## 4. The Workflows
-
-### The Admin Side (Setting up the Data)
-1.  The Admin logs in.
-2.  They create a "Place" (e.g., "The Library").
-3.  They upload "Training Images." For each image, the AI generates a "Digital Fingerprint" and saves it to the database.
-4.  They can also upload "Old Photos" for the historical slideshow.
-
-### The User Side (Identifying a Place)
-1.  The User uploads a photo or uses their camera.
-2.  The website sends that photo to the Python backend.
-3.  The backend extracts the "fingerprint" and finds the best match in the database.
-4.  If a match is found, it slides out a beautiful result page with the name, a similarity score, a description, and a historical slideshow.
+## 3. Teknologi yang Digunakan (Tech Stack)
+*   **Frontend (Tampilan):** HTML5, CSS3 (Modern UI), dan JavaScript. Kami menggunakan "Feather Icons" untuk desain ikonnya.
+*   **Backend (Mesin):** **Flask** (framework web berbasis Python). Ini yang menangani permintaan pengguna dan menghubungkannya dengan logika AI.
+*   **Database:** **SQLite** dengan **SQLAlchemy**. Ini digunakan untuk menyimpan nama tempat, deskripsi, dan "Sidik Jari Digital" mereka.
+*   **Library AI:** **TensorFlow/Keras** (untuk menjalankan model MobileNetV2) dan **NumPy** (untuk perhitungan matematika).
 
 ---
 
-## 5. FAQ (Be Ready for These!)
+## 4. Alur Kerja (Workflow)
 
-**Q: Why use MobileNetV2 specifically?**
-*   **A:** It's designed to be fast and efficient. It can run on phones or small servers without needing a massive supercomputer, which makes it perfect for a web app.
+### Sisi Admin (Menyiapkan Data)
+1.  Admin masuk (login).
+2.  Admin membuat data "Tempat" baru (misal: "Perpustakaan").
+3.  Admin mengunggah "Foto Latihan". Untuk setiap foto, AI akan membuat "Sidik Jari Digital" dan menyimpannya di database.
+4.  Admin juga bisa mengunggah "Foto Jadul" untuk ditampilkan dalam slideshow sejarah.
 
-**Q: What happens if I upload a picture of a cat?**
-*   **A:** The AI will still generate a "fingerprint" for the cat, but when it compares it to the "fingerprints" of buildings in the database, the similarity score will be very low (e.g., 0.2). Our code has a **threshold (0.6)**; if the score is lower than that, it says "Could not identify the place."
-
-**Q: Where are the images stored?**
-*   **A:** The actual image files are stored in the `uploads/` folder, while the image names and their AI "fingerprints" are stored in the SQLite database.
-
-**Q: Can it recognize a place it hasn't seen before?**
-*   **A:** No. It can only recognize places that an Admin has already added and "trained" the system on by uploading images.
+### Sisi Pengguna (Mengenali Tempat)
+1.  Pengguna mengunggah foto atau menggunakan kamera.
+2.  Website mengirim foto tersebut ke backend Python.
+3.  Backend mengekstrak "sidik jari" dan mencari kecocokan terbaik di database.
+4.  Jika ditemukan kecocokan, muncul halaman hasil yang keren dengan nama tempat, skor kemiripan, deskripsi, dan slideshow foto sejarah.
 
 ---
 
-## 6. Suggested 5-7 Minute Presentation Script
+## 5. FAQ (Siap-siap Pertanyaan Ini!)
 
-### Minute 1: Intro & Demo
-*   "Hello everyone! Today I’m showing you my AI Place Recognition project."
-*   "The goal is simple: You take a photo of a landmark, and the AI tells you what it is, gives you a history of the place, and shows you some old historical photos."
-*   *(Action: Show the home page and do a quick upload if you have a demo image ready)*.
+**T: Mengapa menggunakan MobileNetV2?**
+*   **J:** Karena model ini dirancang untuk cepat dan efisien. Bisa dijalankan di HP atau server kecil tanpa butuh komputer super besar, jadi sangat cocok untuk aplikasi web.
 
-### Minute 2-3: The "How" (Machine Learning)
-*   "People often ask: 'Does the AI just compare pixels?' The answer is no."
-*   "I used **MobileNetV2**. Think of this as the AI's 'eyes'. When it looks at an image, it ignores things like lighting or small changes and instead creates a **Digital Fingerprint**—a list of numbers that represents the unique features of that building."
-*   "When you upload a photo, the system creates a new fingerprint and compares it to all the fingerprints in our database using **Cosine Similarity**—which is just a fancy way of saying it calculates how 'close' two fingerprints are."
+**T: Apa yang terjadi jika saya mengunggah foto kucing?**
+*   **J:** AI akan tetap membuat "sidik jari" untuk kucing itu, tapi saat dibandingkan dengan sidik jari gedung di database, skor kemiripannya akan sangat rendah (misal cuma 0.2). Kode kita punya **ambang batas (0.6)**; jika skor di bawah itu, sistem akan bilang "Tempat tidak dikenal."
 
-### Minute 4: The Admin & Data
-*   "Behind the scenes, we have an Admin panel. This is where the 'learning' happens."
-*   "To add a new place, I upload several photos of it. The AI extracts the fingerprints for each one and saves them. This way, the system can recognize the building from different angles."
+**T: Di mana foto-foto tersebut disimpan?**
+*   **J:** File foto asli disimpan di folder `uploads/`, sedangkan nama tempat dan "sidik jari" AI-nya disimpan di database SQLite.
 
-### Minute 5: Technology Stack
-*   "Technically, this is a full-stack Python application."
-*   "I used **Flask** for the web server, **TensorFlow** for the AI model, and **SQLAlchemy** for the database. The frontend is built with modern CSS and JavaScript to make it look like a professional mobile app."
+**T: Bisakah ia mengenali tempat yang belum pernah didaftarkan?**
+*   **J:** Tidak. Ia hanya bisa mengenali tempat yang sudah ditambahkan oleh Admin dan sudah "dilatih" dengan mengunggah foto-fotonya ke sistem.
 
-### Minute 6-7: Conclusion & Questions
-*   "What I learned: The hardest part wasn't the AI—it was making sure the AI and the website talked to each other smoothly."
-*   "In the future, I could add more places or even GPS coordinates so it only searches for buildings near you."
-*   "Does anyone have any questions?"
+---
+
+## 6. Contoh Naskah Presentasi (5-7 Menit)
+
+### Menit 1: Pembukaan & Demo
+*   "Halo semuanya! Hari ini saya akan mempresentasikan proyek AI Place Recognition saya."
+*   "Tujuannya sederhana: Anda ambil foto sebuah bangunan bersejarah, dan AI akan memberi tahu itu bangunan apa, sejarahnya, serta menunjukkan foto-foto jadul dari tempat tersebut."
+*   *(Aksi: Tunjukkan halaman utama dan coba unggah foto jika ada contohnya).*
+
+### Menit 2-3: Bagian "Bagaimana Ini Bekerja" (Machine Learning)
+*   "Mungkin teman-teman bertanya: 'Apakah AI cuma membandingkan gambar biasa?' Jawabannya tidak."
+*   "Saya menggunakan **MobileNetV2**. Anggap saja ini sebagai 'mata' AI. Saat melihat gambar, AI mengabaikan hal-hal seperti pencahayaan dan fokus pada bentuk unik bangunan tersebut untuk membuat **Sidik Jari Digital**."
+*   "Saat kita upload foto, sistem membuat sidik jari baru dan membandingkannya dengan database menggunakan **Cosine Similarity**—cara matematika untuk menghitung seberapa mirip dua sidik jari tersebut."
+
+### Menit 4: Admin & Data
+*   "Di balik layar, ada panel Admin. Di sinilah proses 'belajar' terjadi."
+*   "Untuk menambahkan tempat baru, saya mengunggah beberapa foto. AI akan mengambil sidik jari dari setiap foto itu dan menyimpannya. Dengan begitu, AI bisa mengenali bangunan dari berbagai sudut."
+
+### Menit 5: Teknologi
+*   "Secara teknis, ini adalah aplikasi full-stack berbasis Python."
+*   "Saya menggunakan **Flask** untuk server web, **TensorFlow** untuk model AI-nya, dan **SQLAlchemy** untuk database. Tampilannya menggunakan CSS modern agar terlihat seperti aplikasi profesional."
+
+### Menit 6-7: Penutup & Tanya Jawab
+*   "Pelajaran yang saya ambil: Bagian tersulit bukan AI-nya, tapi memastikan AI dan website bisa berkomunikasi dengan lancar."
+*   "Ke depannya, saya bisa menambahkan lebih banyak tempat atau fitur GPS."
+*   "Apakah ada yang ingin ditanyakan?"
