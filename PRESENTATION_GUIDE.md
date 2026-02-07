@@ -31,11 +31,28 @@ Ini adalah bagian terpenting untuk dijelaskan kepada gurumu. Kami menggunakan te
 
 ---
 
-## 3. Teknologi yang Digunakan (Tech Stack)
-*   **Frontend (Tampilan):** HTML5, CSS3 (Modern UI), dan JavaScript. Kami menggunakan "Feather Icons" untuk desain ikonnya.
-*   **Backend (Mesin):** **Flask** (framework web berbasis Python). Ini yang menangani permintaan pengguna dan menghubungkannya dengan logika AI.
-*   **Database:** **SQLite** dengan **SQLAlchemy**. Ini digunakan untuk menyimpan nama tempat, deskripsi, dan "Sidik Jari Digital" mereka.
-*   **Library AI:** **TensorFlow/Keras** (untuk menjalankan model MobileNetV2) dan **NumPy** (untuk perhitungan matematika).
+## 3. Teknologi yang Digunakan (Tech Stack) - Penjelasan Detail
+
+Berikut adalah penjelasan lebih dalam mengenai teknologi yang saya gunakan:
+
+### A. Backend: Flask (Python)
+*   **Apa itu:** Flask adalah sebuah *micro-framework* yang ditulis dalam bahasa Python.
+*   **Fungsinya:** Flask bertugas sebagai "Pelayan" atau jembatan. Saat pengguna mengunggah foto, Flask menerima foto tersebut, mengirimkannya ke sistem AI untuk dianalisis, lalu mengirimkan hasilnya kembali ke layar pengguna.
+*   **Kenapa Flask?** Karena Flask sangat ringan, cepat, dan sangat mudah diintegrasikan dengan library AI (seperti TensorFlow).
+
+### B. AI Engine: TensorFlow & Keras
+*   **Apa itu:** Library buatan Google yang paling populer untuk mengembangkan kecerdasan buatan.
+*   **Fungsinya:** Kami menggunakan TensorFlow untuk memuat model **MobileNetV2**. TensorFlow menangani perhitungan matematika yang sangat rumit di balik layar agar AI bisa "mengenali" pola-pola dalam gambar.
+*   **Poin Penting:** Tanpa TensorFlow, kita harus menulis ribuan baris rumus matematika secara manual untuk mengenali gambar.
+
+### C. Database: SQLite & SQLAlchemy
+*   **SQLite:** Ini adalah database "tanpa server" yang sangat ringan. Semua data (nama tempat, deskripsi, dan sidik jari digital) disimpan dalam satu file kecil.
+*   **SQLAlchemy (ORM):** Ini adalah alat yang memungkinkan saya sebagai programmer untuk "berbicara" dengan database menggunakan bahasa Python biasa, alih-alih menggunakan bahasa database yang rumit (SQL). Ini membuat pengelolaan data menjadi lebih rapi dan aman.
+
+### D. Frontend: Modern CSS & JavaScript
+*   **JavaScript:** Bertanggung jawab atas semua "Interaksi" di website. Contohnya: membuka kamera secara langsung di browser, menampilkan animasi *loading* saat AI sedang berpikir, dan membuat hasil pencarian muncul dengan animasi *slide-in*.
+*   **CSS (Modern Theme):** Digunakan untuk mendesain tampilan agar terlihat seperti aplikasi mobile profesional. Saya menggunakan teknik *Responsive Design* (Media Queries), sehingga website ini tetap terlihat bagus baik saat dibuka di laptop maupun di HP.
+*   **Feather Icons:** Library ikon yang membuat antarmuka (UI) terlihat bersih dan minimalis.
 
 ---
 
